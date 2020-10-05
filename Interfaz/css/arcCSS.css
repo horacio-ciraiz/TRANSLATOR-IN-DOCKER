@@ -1,0 +1,107 @@
+body {
+  background: rgb(255, 255, 255);
+background: linear-gradient(0deg, rgba(0,0,0,1) 14%, rgba(70,70,71,1) 39%, rgba(144,144,144,1) 58%, rgba(255,255,255,1) 80%);
+}
+.PanelMenu{
+  margin-top:20px;
+  margin-left: 80px;
+  width: 1195px;
+  height:50px;
+  border-color: rgb(92, 4, 55) ;
+  background-color:#242322;
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 10px 10px 10px 10px;
+-moz-border-radius: 10px 10px 10px 10px;
+-webkit-border-radius: 10px 10px 10px 10px;
+border: 0px solid #000000;
+}
+.Menu ,.Descargar{
+  margin-top: 8px;
+  margin-left: 20px;
+  border-color: #227;
+  height: 30px;
+  font-size: 0.5cm;
+  
+  
+  
+} 
+
+
+.consola{
+  width:600px;
+  height: 200px;
+  background-color: #000;
+  color:white;
+  white-space: nowrap;
+
+  border-radius: 10px 10px 10px 10px;
+-moz-border-radius: 10px 10px 10px 10px;
+-webkit-border-radius: 10px 10px 10px 10px;
+border: 0px solid #000000;
+overflow: scroll;
+resize: none;
+
+}
+
+.entrada{
+  width:550px;
+  height:300px;
+  background-color:white;
+  color:black;
+  white-space: nowrap;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  border: 1px solid #000000;
+  overflow: scroll;
+  resize: none;
+  
+
+}
+
+
+/* Style the tab ****************************/
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #242322;
+  border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3p;
+  border-bottom: 1px solid #000000;
+
+}
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: #242322;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+background-color: #ddd;
+color:black;
+}
+
+/* Create an active/current tablink class */
+
+/* Style the tab content */
+.tabcontent {
+display: none;
+padding: 6px 12px;
+border: 1px solid black;
+border-top:0px;
+border-radius: 3px 3px 3px 3px;
+-moz-border-radius: 3px 3px 3px 3px;
+-webkit-border-radius: 3px 3px 3px 3p;
+
+
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+	<head>
+		<title>Translator in Docker</title>
+
+        <script  src="../js/arcJS.js"></script>
+        
+
+        <link rel="stylesheet" href="../css/arcCSS.css" TYPE="text/css" MEDIA="screen">
+
+        <script src="../js/codemirror/lib/codemirror.js"></script>
+        <link rel="stylesheet" href="../js/codemirror/lib/codemirror.css">
+        <script src="../js/codemirror/mode/clike/clike.js"></script>
+        <script src="../js/codemirror/mode/javascript/javascript.js"></script>
+        <script src="../js/codemirror/mode/python/python.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script>
+            window.onload=function() {
+                document.getElementById("defaultOpen").click();
+            }
+            </script>
+	</head>
+	<body>
+        <div class="PanelMenu">
+            <table border=0>
+                <tr>
+                    <td width=100>
+                        <select name ="Menu" class="Menu" id="Menu" onchange="MetodoAbrir();">
+                            <option value =" null " disabled selected selected="selected"> Menu</option>".
+                            <Option value = "Menu_Abrir" id="open_file" type="file">Abrir</option>
+                            <Option value = "Menu_Nuevo" id="add_tab">Nuevo</option>     
+                            <Option value = "Menu_Guardar"id="save">Guardar</option>
+                            <Option value = "Menu_GuardarComo" id="saveas">Guardar Como</option>    
+                            
+                        </select>
+                    </td>
+                    <td width=100>
+                        <select name ="Descargar" class="Descargar">
+                            <Option value =" null " disabled selected  selected="selected">Descargar</option>".
+                            <Option value = "option1"> Abrir</option>
+                            <Option value = "option2" >Nuevo</option>     
+                            <Option value = "opción3">Guardar</option>
+                            <Option value = "opción3">Guardar Como</option>    
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <table border=0 width=1200 height=700 align="center">
+            <tr height=400>
+                <td width=600>
+
+                <!-- Tabs -->
+                <div class="tab">
+                    <button class="tablinks" onclick="openPage('Tab1',this)" id="defaultOpen">Tab1</button >
+                    <button class="tablinks" onclick="openPage('Tab2',this)">Tab2</button>
+                    <button class="tablinks" onclick="openPage('Tab3',this)">Tab3</button>
+                </div>
+                  
+                  <!-- Tab content -->
+                  <div id="Tab1" class="tabcontent">
+                    <h3>Consola Entrada</h3>
+                    <textarea name="ConsolaEntrada"  id="entradatext" class="entrada"></textarea>
+
+                  </div>
+                  
+                  <div id="Tab2" class="tabcontent">
+                    <h3>Consola Entrada</h3>
+                    <textarea name="ConsolaEntrada"  class="entrada"></textarea>
+                  </div>
+                  
+                  <div id="Tab3" class="tabcontent">
+                    <h3>Consola Entrada</h3>
+                    
+                    <textarea name="ConsolaEntrada" id="entrada" class="entrada"></textarea>
+                  </div>    
+
+                
+                <!-- Tabs -->
+                </td>
+                <td width=600>
+                    <table border=0 width=600 height=400>
+                        <tr height=200><td width=600 ><textarea name="ConsolaPython" readonly="readonly"  class="consola">Consola Python</textarea></td></tr>
+                        <tr height=200><td width=600><textarea name="ConsolaJavaScript"  readonly="readonly" class="consola">Consola JavaScript</textarea><Consola/td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+
+            </tr>
+        </table>
+        
+	</body>
+</html>
