@@ -10,15 +10,14 @@ import (
 
 //	Sets up an html file to be showed in the defined port.
 func index(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("index.html")) //	parses the file to a template
-	t.Execute(w, "")                                      //	shows the html by invoking it
+	t := template.Must(template.ParseFiles("Index.html")) //
+	t.Execute(w, "")                                      //
 }
 
 func main() {
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css/")))) //	registers a 'handler' that is responsible of a route/path
-	//http.Handle("/fonts/", http.StripPrefix("/fonts/", http.FileServer(http.Dir("fonts/")))) //	'handler' responds to an HTTP request
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css/"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js/"))))
-	//	basically this is what they do
+
 	http.HandleFunc("/", index) //	registers a handler function (index) for the pattern ("/")
 
 	fmt.Printf("Servidor escuchando en: http://localhost:8012/") //	message (using fmt package)
