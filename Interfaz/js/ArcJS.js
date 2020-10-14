@@ -49,28 +49,18 @@ function MetodoAbrir() {
   if(cod=="Menu_Abrir"){
     
     alert(cod);
-
-    
-    
-    
     var input = document.createElement('input');
     input.type = 'file';
     input.onchange = e => { 
-
       // getting a hold of the file reference
       var file = e.target.files[0]; 
-   
       // setting up the reader
       var reader = new FileReader();
       reader.readAsText(file,'UTF-8');
-   
       // here we tell the reader what to do when it's done reading...
       reader.onload = readerEvent => {
          var content = readerEvent.target.result; // this is the content!
 
-
-      
-        
          document.getElementById("entradatext").value = content;
          
          var editor=CodeMirror.fromTextArea(
@@ -108,21 +98,22 @@ function MetodoAbrir() {
 }
 
 function Conexion(){
-  alert("Conexion");
+  
   var url= "http://localhost:8001/Analizar/"
   
-  var datos= document.getElementById("entradatext").value
+  var datos= document.getElementById("entradatext").value;
+  alert(datos);
   console.log(datos)
-  alert("Conexion2");
-  $.post(url,{text:datos},function(data,status){
-    Console.log.log(status);
+  alert("Alertas");
+  $.post(url,datos,function(data,status){
+    console.log(status);
+
     if(data.length==0){
       alert("No hay Errores");
     }else{
-
       alert("Hay Errores");
     }
-  })
+  });
 }
 
 

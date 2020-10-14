@@ -32,25 +32,25 @@ app.post('/Analizar/',(req,res)=>{
         const {input}=req.body;
         var fs=require('fs');
         var parser =require('./Gramatica');
-        var ast;
-        data="Evaluar[1+1];"
-        parser.parse(data);
+        //var ast;
+        //data="Evaluar[1+1];"
+        //parser.parse(data);
         try{
-            ast= parser.parse(input.toString());
-            fs.writeFileSync("./ast.json",JSON.stringify(ast,null,2));
+            parser.parse(input.toString());
+            //fs.writeFileSync("./ast.json",JSON.stringify(ast,null,2));
             
         }catch(e){
-            console.log("No se pudo recuperar");
+            console.log("Pos Me Mori");
             console.error(e);
         }
 
-        let errores= require("./Gramatica").errors;
+        //let errores= require("./Gramatica").errors;
 
-        if(ast!= undefined){
-            console.log(errors);
+       // if(ast!= undefined){
+         //   console.log(errors);
 
-        }
-        res.send(errors);
+        //}
+       // res.send(errors);
 
     }catch(e){
         console.error(e);
