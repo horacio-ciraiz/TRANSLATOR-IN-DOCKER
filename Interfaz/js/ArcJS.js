@@ -98,14 +98,15 @@ function MetodoAbrir() {
 }
 
 function Conexion(){
+  alert("Alertas88");
   
-  var url= "http://localhost:8001/Analizar/"
+  var url= "http://localhost:8080/Analizar/";
   
-  var datos= document.getElementById("entradatext").value;
-  alert(datos);
+   var ii = {input:  document.getElementById("entradatext").value};
+  alert(ii);
   console.log(datos)
-  alert("Alertas");
-  $.post(url,datos,function(data,status){
+  
+  $.post(url,ii,function(data,status){
     console.log(status);
 
     if(data.length==0){

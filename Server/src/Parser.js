@@ -1,5 +1,5 @@
 var parser = require('./Gramatica');
-data="Evaluar[1+1];"
+data="public static void main (String[] args){ }"
 
 parser.parse(data);
 console.log("Entre");

@@ -1,11 +1,11 @@
 
-console.log('Server Escuchando')
-const express = require("express")
-const app=express() //servidor
+console.log('Server Escuchando');
+const express = require("express");
+const app=express(); //servidor
 
-var cors=require('cors')
-app.use(cors())
-app.set('port',process.env.PORT||8001);
+var cors=require('cors');
+app.use(cors());
+app.set('port',process.env.PORT||8080);
 
 const morgan = require("morgan");
 app.use(morgan('dev'));
@@ -19,15 +19,16 @@ console.log(`Server on port ${app.get('port')}`);
 
     //console.log('Server on port ${8001}')
 
-})
+});
 
 // Metodos
 app.get('/',(req,res)=> {
-    console.log("Esperando para Prueba")
-    res.send("Hello")
+    console.log("Esperando para Prueba");
+    res.send("Hello");
 });
 
 app.post('/Analizar/',(req,res)=>{
+    console.log("Esperando para Prueba");
     try{
         const {input}=req.body;
         var fs=require('fs');
@@ -44,13 +45,13 @@ app.post('/Analizar/',(req,res)=>{
             console.error(e);
         }
 
-        //let errores= require("./Gramatica").errors;
+        let errores= require("./Gramatica").errors;
 
        // if(ast!= undefined){
          //   console.log(errors);
 
         //}
-       // res.send(errors);
+        res.send(errors);
 
     }catch(e){
         console.error(e);
@@ -58,6 +59,4 @@ app.post('/Analizar/',(req,res)=>{
     }
 
 
-}
-
-);
+});
