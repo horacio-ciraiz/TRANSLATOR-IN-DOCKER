@@ -51,6 +51,7 @@
 "System.out.println"	return 'print';
 "args"			return "args";
 "public"		return "public";
+"class"			return "class";
 //------------Sentencias
 "for"			return 'for';
 "while"			return 'while';
@@ -74,14 +75,11 @@
 "String"		return 'string';
 "char"			return 'char';
 
-//-----------------Comentarios----------------
-"//".*          //comentario una linea 
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // comentario multiple líneas
 
 /* Espacios en blanco */
 
-
-[ \r\t]+            {}
+[\s]+                    {}
+[\r\t]+            {}
 \n                  {}
 //------------------Expresiones Regulares
 
@@ -89,6 +87,11 @@
 [0-9]+("."[0-9]+)?\b    return 'decimal';
 [0-9]+\b                return 'entero';
 \"[^\"]*\"              { yytext = yytext.substr(1,yyleng-2); return 'cadena'; }
+
+//-----------------Comentarios----------------
+
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]  return 'comentariomulti';// comentario multiple líneas
+
 
 <<EOF>>                 return 'EOF';
 
@@ -101,6 +104,7 @@
 %left 'por' 'dividido'
 %left UMENOS
 
+
 %start INICIO
 
 %% /* Definición de la gramática */
@@ -111,20 +115,66 @@ INICIO
 
 LISTACLASE:LISTACLASE CLASE
 	|CLASE
+	|error { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 	;
 
-CLASE:public TIPOCLASE llaveA llaveC; 
+CLASE:public TIPOCLASE
+	;
+
 
 TIPOCLASE:MAIN
 	|CLASS
 	|INTERFACE
 	;
 
-MAIN: static void main parentesisA string  corcheteA corcheteC args parentesisC;
+MAIN: static void main parentesisA string  corcheteA corcheteC args parentesisC llaveA  llaveC
+	;
 
-CLASS: class identificador;
+CLASS: class identificador llaveA llaveC
+	|class identificador llaveA LISTACUERPOCLASS llaveC
+	;
 
-INTERFACE: interface identificador;
+LISTACUERPOCLASS:LISTACUERPOCLASS CUERPOCLASS
+				|CUERPOCLASS
+				;
+
+CUERPOCLASS:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC llaveA llaveC //--con parametros
+			|public TIPOVOID identificador parentesisA  parentesisC llaveA llaveC; //---sin parametros 
+
+
+LISTADOSENTENCIAS: LISTADOSENTENCIAS SENTENCIAS 
+				|SENTENCIAS
+				;
+
+SENTENCIAS:	REPETICION
+			|CONTROL
+			|BREAK
+			|CONTINUE
+			|RETURN
+
+			;
+
+LISTAPARAMETROS:LISTAPARAMETROS coma PARAMETROS 
+				|PARAMETROS
+				;
+
+PARAMETROS:TIPO identificador; 
+
+TIPOVOID:void
+		|TIPO
+		;
+TIPO:int 
+	|boolean
+	|double
+	|string
+	|char
+	;
+
+				
+INTERFACE: interface identificador llaveA llaveC;
+
+
+
 
 
 /*
