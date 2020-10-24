@@ -1,5 +1,5 @@
 
-console.log('Server Escuchando');
+/*console.log('Server Escuchando');
 const express = require("express");
 const app=express(); //servidor
 
@@ -59,4 +59,21 @@ app.post('/Analizar/',(req,res)=>{
     }
 
 
-});
+});*/
+
+
+
+var fs = require('fs');
+var parser = require('./Gramatica');
+var ast = require('./AST');
+
+
+fs.readFile('./prueba.txt', (err,data) => {
+   // if (err) trhow err;
+    //parser.parse(data.toString());
+
+    var raiz = new ast();
+    console.log(raiz.RecorrerAST( parser.parse(data.toString())));
+    //****console.log(raiz.traduccionTree( parser.parse(data.toString())));
+ });
+
