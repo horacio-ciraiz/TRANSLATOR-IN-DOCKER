@@ -6,12 +6,7 @@ class NodoAST{
         this.ID=0;
     }
 
-    getValor(){
-        this.Valor;
-    }
-    getTipo(){
-        this.Tipo;
-    }
+
     addHijos(Hijos){
         this.Hijos.push(Hijos);
     }

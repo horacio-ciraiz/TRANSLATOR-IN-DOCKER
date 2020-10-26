@@ -1,7 +1,8 @@
 
  %{
 	 const Nodo = require('./NodoAST');
-%}
+	 
+ %}
 /**
  * Jison utilizando Nodejs en Mint
  */
@@ -101,13 +102,16 @@
 .                       { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
 /lex
 /* Asociación de operadores y precedencia */
+
+
 %left 'mas' 'menos'
 %left 'dividido' 'por'
 %left 'adicion' 'sustraccion'
+
 %left umenos
 
-%start INICIO
 
+%start INICIO
 %% /* Definición de la gramática */
 
 INICIO: LISTACLASE EOF 	{$$= new Nodo("INICIO","");
@@ -126,13 +130,10 @@ LISTACLASE:LISTACLASE CLASE{ $$ = new Nodo("LISTACLASE","");
 	|error  pcoma { console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 	;
 
-CLASE:public TIPOCLASE{ $$ = new Nodo("CLASE","");
-						$$.addHijos($2);																			
-				}
-	;
 
 
-TIPOCLASE:CLASS{ $$ = new Nodo("TIPOCLASE","");
+
+CLASE:CLASS{ $$ = new Nodo("TIPOCLASE","");
 					$$.addHijos($1);																			
 				}
 	|INTERFACE{ $$ = new Nodo("TIPOCLASE","");
@@ -150,12 +151,12 @@ MAIN: public static void main parentesisA string  corcheteA corcheteC args paren
 
 //------------------------------------Class--------------
 
-CLASS: class identificador llaveA llaveC  { $$ = new Nodo("CLASS","");
-											$$.addHijos(new Nodo($2,"identificador"));
+CLASS: public class identificador llaveA llaveC  { $$ = new Nodo("CLASS","");
+											$$.addHijos(new Nodo($3,"identificador"));
 											}
-	|class identificador llaveA LISTACUERPOCLASS llaveC{ $$ = new Nodo("CLASS","");
-											$$.addHijos(new Nodo($2,"identificador"));
-											$$.addHijos($4);
+	|public class identificador llaveA LISTACUERPOCLASS llaveC{ $$ = new Nodo("CLASS","");
+											$$.addHijos(new Nodo($3,"identificador"));
+											$$.addHijos($5);
 											}
 	;
 				
@@ -222,10 +223,30 @@ METODOS:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC ll
 	;						
 
 //-----------------------------Interface------------------
-INTERFACE: interface identificador llaveA llaveC  	{ $$ = new Nodo("INTERFACE","");
-													$$.addHijos(new Nodo($2,"identificador"));
+INTERFACE: public interface identificador llaveA llaveC  	{ $$ = new Nodo("INTERFACE","");
+													$$.addHijos(new Nodo($3,"identificador"));
 													}
+		|public interface identificador llaveA LISTACUERPOINTERFACE llaveC{ $$ = new Nodo("INTERFACE","");
+																	$$.addHijos(new Nodo($3,"identificador"));
+																	$$.addHijos($5);
+																	}
 ;
+
+LISTACUERPOINTERFACE:LISTACUERPOINTERFACE CUERPOINTERFACE { $$ = new Nodo("LISTACUERPOINTERFACE","");
+																	$$.addHijos($1);
+																	$$.addHijos($2);
+																	}
+					|CUERPOINTERFACE					  { $$ = new Nodo("LISTACUERPOINTERFACE","");
+																	$$.addHijos($1);
+																	
+																	}
+					;
+
+CUERPOINTERFACE:FUNCIONES{ $$ = new Nodo("CUERPOINTERFACE","");
+							$$.addHijos($1);
+						}
+;
+
 
 //-------------Lista de Instrucciones------
 LISTAINSTRUCCIONES:LISTAINSTRUCCIONES INSTRUCCIONES 	{ $$ = new Nodo("LISTAINSTRUCCIONES","");
@@ -238,8 +259,8 @@ LISTAINSTRUCCIONES:LISTAINSTRUCCIONES INSTRUCCIONES 	{ $$ = new Nodo("LISTAINSTR
 				;
 
 INSTRUCCIONES:SENTENCIAS	{ $$ = new Nodo("INSTRUCCIONES","");
-						$$.addHijos($1);	
-						}
+							$$.addHijos($1);	
+							}
 			;
 			
 
@@ -270,7 +291,33 @@ SENTENCIAS:	REPETICION	{ $$ = new Nodo("SENTENCIA","");
 			|EXP { $$ = new Nodo("SENTENCIA","");
 						$$.addHijos($1);	
 						}
+			|LLAMADA{ $$ = new Nodo("SENTENCIA","");
+						$$.addHijos($1);	
+						}
 			;
+
+LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC pcoma{ $$ = new Nodo("LLAMADA","");
+																 $$.addHijos(new Nodo($1,"identificador")); 
+																 $$.addHijos($3);	
+																}
+		|identificador parentesisA  parentesisC pcoma		{ $$ = new Nodo("LLAMADA","");
+																 $$.addHijos(new Nodo($1,"identificador")); 
+																 
+																}
+;
+
+LISTAPARAMETROSVALOR:LISTAPARAMETROSVALOR coma 	PARAMETROSVALOR {	 $$ = new Nodo("LISTAPARAMETROSVALOR","");
+																 $$.addHijos($1); 
+																 $$.addHijos($3); 
+																}
+					|PARAMETROSVALOR 							{	 $$ = new Nodo("LISTAPARAMETROSVALOR","");
+																 $$.addHijos($1); 
+																}
+					;			
+
+PARAMETROSVALOR: EXPRESIONRELACIONAL							{	 $$ = new Nodo("PARAMETROSVALOR","");
+																 $$.addHijos($1); 
+																};
 
 EXP: identificador adicion pcoma{ $$ = new Nodo("AUMENTO","");
 								$$.addHijos(new Nodo($1,"identificador")); 	
@@ -429,11 +476,14 @@ LISTAPARAMETROS:LISTAPARAMETROS coma PARAMETROS 	{ $$ = new Nodo("LISTAPARAMETRO
 														$$.addHijos($3); 
 													}	
 
-				|PARAMETROS 						{ $$ = new Nodo("PARAMETROS","");
+				|PARAMETROS 						{ $$ = new Nodo("LISTAPARAMETROS","");
                             							$$.addHijos($1);
                             							
 													}
 				;
+
+
+
 
 PARAMETROS:TIPO identificador 						{ $$ = new Nodo("PARAMETROS","");
                             							$$.addHijos($1);
