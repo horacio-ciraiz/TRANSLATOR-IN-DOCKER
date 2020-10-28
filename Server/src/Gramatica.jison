@@ -185,9 +185,13 @@ CUERPOCLASS:METODOS { $$ = new Nodo("CUERPOCLASS","");
 			|MAIN	{ $$ = new Nodo("CUERPOCLASS","");
 						$$.addHijos($1);
 					}
-			; 
+			|ASIGNACION	{ $$ = new Nodo("CUERPOCLASS","");
+						$$.addHijos($1);				 //---------------------Funciones
+			}
+			;
 
-//---------------------Funciones
+
+
 FUNCIONES:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC pcoma { $$ = new Nodo("FUNCIONES","");
 																							$$.addHijos($2);
 																							$$.addHijos(new Nodo($3,"identificador"));
@@ -319,11 +323,13 @@ PARAMETROSVALOR: EXPRESIONRELACIONAL							{	 $$ = new Nodo("PARAMETROSVALOR",""
 																 $$.addHijos($1); 
 																};
 
-EXP: identificador adicion pcoma{ $$ = new Nodo("AUMENTO","");
-								$$.addHijos(new Nodo($1,"identificador")); 	
-								}
-	|identificador sustraccion pcoma{ $$ = new Nodo("DECREMENTO","");
+EXP: identificador adicion pcoma{ $$ = new Nodo("AUM_DEC","");
 								$$.addHijos(new Nodo($1,"identificador")); 
+								$$.addHijos(new Nodo($2,"sutraccion")); 	
+								}
+	|identificador sustraccion pcoma{ $$ = new Nodo("AUM_DEC","");
+								$$.addHijos(new Nodo($1,"identificador")); 
+								$$.addHijos(new Nodo($2,"sustraccion")); 
 								};
 
 
@@ -399,10 +405,10 @@ IF: if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC 	{ $$ = new Nodo("I
 																				}	
 	;
 //-------------------else--------------
-ELSE:else llaveA llaveC						{ $$ = new Nodo("ELSEIF","");
+ELSE:else llaveA llaveC						{ $$ = new Nodo("ELSE","");
 											
 											}	
-	|else llaveA LISTAINSTRUCCIONES llaveC	{ $$ = new Nodo("ELSEIF","");
+	|else llaveA LISTAINSTRUCCIONES llaveC	{ $$ = new Nodo("ELSE","");
 											$$.addHijos($3);
 											}	
 	;
@@ -419,17 +425,16 @@ ELSEIF:else if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC	{ $$ = new 
 
 
 //---------------Break
-BREAK: break													{ $$ = new Nodo("BREAK","");
+BREAK: break pcoma													{ $$ = new Nodo("BREAK","");
 																//$$.addHijos(new Nodo($1,"break"));
 																};
 //---------------Continue
-CONTINUE: continue												{ $$ = new Nodo("CONTINUE","");
+CONTINUE: continue	pcoma											{ $$ = new Nodo("CONTINUE","");
 																//$$.addHijos(new Nodo($1,"continue"));
 																};
 //---------------Return
-RETURN: return EXPRESION										{ $$ = new Nodo("RETURN","");
-																//$$.addHijos(new Nodo($1,"return")); 
-																$$.addHijos($2);
+RETURN: return EXPRESIONLOGICA pcoma									{ $$ = new Nodo("RETURN","");
+																  $$.addHijos($2);
 																}
 		;
 //--------------Asignacion---------------
@@ -530,96 +535,96 @@ TIPO:int 					{ $$ = new Nodo("TIPO","");
 
 //---------------Expresion Numerica
 EXPRESIONNUMERICA:
-		menos EXPRESIONNUMERICA %prec umenos		{ $$ = new Nodo("EXP","");
+		menos EXPRESIONNUMERICA %prec umenos		{ $$ = new Nodo("EXP","INICIO");
 													  $$.addHijos(new Nodo($1,"menos")); 
                             							$$.addHijos($2);
 													}	
-		|EXPRESIONNUMERICA mas EXPRESIONNUMERICA	{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA mas EXPRESIONNUMERICA	{ $$ = new Nodo("EXP","MEDIO");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"mas")); 
 														$$.addHijos($3);
 													}	
-		|EXPRESIONNUMERICA menos EXPRESIONNUMERICA { $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA menos EXPRESIONNUMERICA { $$ = new Nodo("EXP","MEDIO");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"menos")); 
 														$$.addHijos($3);
 													}	
-		|EXPRESIONNUMERICA por EXPRESIONNUMERICA	{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA por EXPRESIONNUMERICA	{ $$ = new Nodo("EXP","MEDIO");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"multiplicacion")); 
 														$$.addHijos($3);
 													}		
-		|EXPRESIONNUMERICA dividido EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA dividido EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"division")); 
 														$$.addHijos($3);
 													}	
-		|EXPRESIONNUMERICA adicion					{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA adicion					{ $$ = new Nodo("EXP","FINAL");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"adicion")); 
 													}	
-		|EXPRESIONNUMERICA sustraccion 				{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA sustraccion 				{ $$ = new Nodo("EXP","FINAL");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"sustraccion")); 
 													}			
-		|parentesisA EXPRESIONNUMERICA parentesisC	{ $$ = new Nodo("EXP","");
+		|parentesisA EXPRESIONNUMERICA parentesisC	{ $$ = new Nodo("EXP","PAREN");
 														$$.addHijos(new Nodo($1,"parentesisA")); 
                             							$$.addHijos($2); 
 														$$.addHijos(new Nodo($3,"parentesisC"));
                         							}
-		|entero										{ $$ = new Nodo("EXP","");
+		|entero										{ $$ = new Nodo("EXP","TERM");
 															$$.addHijos(new Nodo($1,"entero")); 	
                         							}
-		|decimal									{ $$ = new Nodo("EXP","");
+		|decimal									{ $$ = new Nodo("EXP","TERM");
 															$$.addHijos(new Nodo($1,"decimal")); 	
                         							}
-		|cadena										{ $$ = new Nodo("EXP","");
+		|cadena										{ $$ = new Nodo("EXP","TERM");
 															$$.addHijos(new Nodo($1,"cadena")); 	
                         							}
-		|identificador  							{ $$ = new Nodo("EXP","");
+		|identificador  							{ $$ = new Nodo("EXP","TERM");
 															$$.addHijos(new Nodo($1,"identificador")); 	
                         							}
 		;
 
 EXPRESIONRELACIONAL:
 		//--------------Relacionales----------
-		EXPRESIONNUMERICA dobleigual EXPRESIONNUMERICA 		{ $$ = new Nodo("EXP","");
+		EXPRESIONNUMERICA dobleigual EXPRESIONNUMERICA 		{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"dobleigual")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA notigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA notigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"not igual")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA mayor EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA mayor EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"mayor")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA mayorigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA mayorigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"mayorigual")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA menor EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA menor EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"menor")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA menorigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA menorigual EXPRESIONNUMERICA{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"dobleigual")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONNUMERICA /* esta se puede borrar*/{ $$ = new Nodo("EXP","");
+		|EXPRESIONNUMERICA /* esta se puede borrar*/{ $$ = new Nodo("EXP","UNICO");
 															$$.addHijos($1); 
 															
 															
@@ -628,30 +633,30 @@ EXPRESIONRELACIONAL:
 
 EXPRESIONLOGICA:
 		//--------------Logicas---------------
-		|EXPRESIONRELACIONAL and EXPRESIONRELACIONAL 		{ $$ = new Nodo("EXP","");
+		|EXPRESIONRELACIONAL and EXPRESIONRELACIONAL 		{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"and")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONRELACIONAL or EXPRESIONRELACIONAL			{ $$ = new Nodo("EXP","");
+		|EXPRESIONRELACIONAL or EXPRESIONRELACIONAL			{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"or")); 
                             								$$.addHijos($3);
 															
                         									}
-		|EXPRESIONRELACIONAL xor EXPRESIONRELACIONAL		{ $$ = new Nodo("EXP","");
+		|EXPRESIONRELACIONAL xor EXPRESIONRELACIONAL		{ $$ = new Nodo("EXP","MEDIO");
 															$$.addHijos($1); 
 															$$.addHijos(new Nodo($2,"xor")); 
                             								$$.addHijos($3);
 															
                         									}
-		|not EXPRESIONRELACIONAL							{ $$ = new Nodo("EXP","");
+		|not EXPRESIONRELACIONAL							{ $$ = new Nodo("EXP","INICIO");
 															$$.addHijos(new Nodo($1,"not")); 
 															$$.addHijos($2); 
 															
                         									}
-		|EXPRESIONRELACIONAL								{ $$ = new Nodo("EXP","");
+		|EXPRESIONRELACIONAL								{ $$ = new Nodo("EXP","UNICO");
 															$$.addHijos($1); 
 															
                         									}

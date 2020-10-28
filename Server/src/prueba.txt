@@ -4,7 +4,9 @@ public class Myclase {
     
     String variable="", variable1=2,variable2;
     int constante,x=100/5*5/5+3+2-1*0+1;
-
+    z=2;
+    const=2;
+    contador++;
   
    public void MyMetodo(int x,int y,string z ,int a){
       String nombre="myMetodo";
@@ -12,10 +14,41 @@ public class Myclase {
       x=10;
       y=11;
       int variable=3+3-5/5*10;
+
+        if(valor==10){
+            //imprime
+            for(int f; x<=f; f++){
+                System.out.println(f);
+            }
+        } else if (valor>10){
+            while(x>0){
+                return hola;
+                continue;
+                break;
+                
+            }
+            System.out.println("x");
+        
+        }else{
+            System.out.println("x");
+            do{
+            System.out.println ("Contador" + (contador + 1) );
+            contador ++;
+        } while (contador<10);
+        }
+
+
+
       System.out.println("myMetodo");
       System.out.print(x);
          LlamadaMetodo(x,2);
   }
+
+  public static void main(String[] args) {
+    int x=2+2;
+  }
+
+  public string Myfuncion(int x, int y, string z);
  
 
 }
@@ -24,3 +57,4 @@ public interface myinterface {
 
     public void nombremetodo (int corre);
 }
+
