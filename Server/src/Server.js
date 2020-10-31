@@ -66,6 +66,7 @@ app.post('/Analizar/',(req,res)=>{
 var fs = require('fs');
 var parser = require('./Gramatica');
 var AST = require('./AST');
+var NodoObjeto = require('./NodoObjeto');
 
 
 fs.readFile('./prueba.txt', (err,data) => {
@@ -73,10 +74,33 @@ fs.readFile('./prueba.txt', (err,data) => {
     //parser.parse(data.toString());
 
     var Raiz = new AST();
-    var CodigoGraphvizRecuperado= Raiz.RecorrerAST( parser.parse(data.toString()));
-    console.log(CodigoGraphvizRecuperado);
-    var CodigoTraducidoRecuperado= Raiz.TraducirAST( parser.parse(data.toString()));
-    console.log(CodigoTraducidoRecuperado);
+    NodoObjeto= parser.parse(data.toString());
+   
+    try{
+        var CodigoGraphvizRecuperado= Raiz.RecorrerAST(NodoObjeto.Nodo);
+        var CodigoTraducidoRecuperado= Raiz.TraducirAST(NodoObjeto.Nodo);
+        console.log(CodigoGraphvizRecuperado);
+        console.log(CodigoTraducidoRecuperado);
+        console.log("lexico");
+        console.log(NodoObjeto.lexico);
+        console.log("sintactico");
+        console.log(NodoObjeto.sintactico);
+        console.log("tokens");
+        //console.log(NodoObjeto.tokens);
+
+
+    }catch(error){
+        console.log("lexico");
+        console.log(NodoObjeto.lexico);
+        console.log("sintactico");
+        console.log(NodoObjeto.sintactico);
+        console.log("tokens");
+      //  console.log(NodoObjeto.tokens);
+    }
+    
+    //----------------------codigo lexema
+    
+
     //****console.log(raiz.traduccionTree( parser.parse(data.toString())));
  });
 

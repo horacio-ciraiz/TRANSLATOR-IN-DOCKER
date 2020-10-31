@@ -251,9 +251,12 @@ class AST {
         }else if (Nodo.Valor == "FUNCIONES") {
             var tamnodos = Nodo.Hijos.length;
             if(tamnodos==2){
-                var FUNCIONES="f";//funciones
+                let nombre= Nodo.Hijos[1].Valor;
+                var FUNCIONES="function " + nombre + "();";//funciones
             }else if (tamnodos==3){
-                var FUNCIONES="f";//funciones
+                let nombre = Nodo.Hijos[1].Valor;
+                let parametros= this.TraducirAST(Nodo.Hijos[2]);
+                var FUNCIONES="function "+nombre+"("+parametros+");";//funciones
             }
 
             return FUNCIONES
@@ -356,6 +359,17 @@ class AST {
             let expresion = this.TraducirAST(Nodo.Hijos[0]);
             var PRINT = "console.log(" + expresion +");";
             return PRINT
+        }else if (Nodo.Valor=="LLAMADA"){
+            var tamnodos = Nodo.Hijos.length;
+
+            if(tamnodos==1){
+                let nombre = Nodo.Hijos[0].Valor;
+                var LLAMADA = "function"
+            }else if (tamnodos==2){
+
+            }
+
+            return LLAMADA
         }
 
 

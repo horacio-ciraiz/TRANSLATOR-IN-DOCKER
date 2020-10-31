@@ -133,10 +133,11 @@ LISTACLASE:LISTACLASE CLASE{ $$ = new Nodo("LISTACLASE","");
 	|CLASE					{   $$ = new Nodo("LISTACLASE","");
 								$$.addHijos($1);																				
 							}
-	
+	|LISTACLASE ERROR SIMBOLO
+	|ERROR SIMBOLO
 	;
 
-
+CLASES:llaveA llaveC;
 
 
 CLASE:CLASS{ $$ = new Nodo("TIPOCLASE","");
@@ -153,7 +154,6 @@ MAIN: public static void main parentesisA string  corcheteA corcheteC args paren
 	| public static void main parentesisA string  corcheteA corcheteC args parentesisC llaveA LISTAINSTRUCCIONES llaveC{ $$ = new Nodo("MAIN","");
 																												$$.addHijos($12);
 																								}
-	|public static void main  ERROR llaveC
 ;
 
 //------------------------------------Class--------------
@@ -165,7 +165,6 @@ CLASS: public class identificador llaveA llaveC  { $$ = new Nodo("CLASS","");
 											$$.addHijos(new Nodo($3,"identificador"));
 											$$.addHijos($5);
 											}
-	|public  ERROR llaveC
 	;
 				
 LISTACUERPOCLASS:LISTACUERPOCLASS CUERPOCLASS { $$ = new Nodo("LISTACUERPOCLASS","");
@@ -174,8 +173,9 @@ LISTACUERPOCLASS:LISTACUERPOCLASS CUERPOCLASS { $$ = new Nodo("LISTACUERPOCLASS"
 												}
 				|CUERPOCLASS					{ $$ = new Nodo("LISTACUERPOCLASS","");
 													$$.addHijos($1);
-												}		
-				
+												}
+				|LISTACUERPOCLASS ERROR SIMBOLO				
+				|ERROR SIMBOLO
 				;
 
 CUERPOCLASS:METODOS { $$ = new Nodo("CUERPOCLASS","");
@@ -210,7 +210,6 @@ FUNCIONES:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC 
 																							$$.addHijos($2);
 																							$$.addHijos(new Nodo($3,"identificador"));
 																							}
-		|public  ERROR pcoma
 		;
 
 //--------------------------------Metodos
@@ -234,7 +233,6 @@ METODOS:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC ll
 																													$$.addHijos(new Nodo($3,"identificador"));
 																													$$.addHijos($7);
 																													}//---sin parametros
-		|public  ERROR llaveC
 	;						
 
 //-----------------------------Interface------------------
@@ -245,7 +243,6 @@ INTERFACE: public interface identificador llaveA llaveC  	{ $$ = new Nodo("INTER
 																	$$.addHijos(new Nodo($3,"identificador"));
 																	$$.addHijos($5);
 																	}
-		|INTERFACE  ERROR llaveC
 ;
 
 LISTACUERPOINTERFACE:LISTACUERPOINTERFACE CUERPOINTERFACE { $$ = new Nodo("LISTACUERPOINTERFACE","");
@@ -255,9 +252,10 @@ LISTACUERPOINTERFACE:LISTACUERPOINTERFACE CUERPOINTERFACE { $$ = new Nodo("LISTA
 					|CUERPOINTERFACE					  { $$ = new Nodo("LISTACUERPOINTERFACE","");
 																	$$.addHijos($1);
 																	
-																	}	
-
-														
+																	}
+					|LISTACUERPOINTERFACE  ERROR SIMBOLO				
+					|ERROR SIMBOLO
+				
 					;
 
 CUERPOINTERFACE:FUNCIONES{ $$ = new Nodo("CUERPOINTERFACE","");
@@ -273,7 +271,9 @@ LISTAINSTRUCCIONES:LISTAINSTRUCCIONES INSTRUCCIONES 	{ $$ = new Nodo("LISTAINSTR
 													}
 				|INSTRUCCIONES 						{ $$ = new Nodo("LISTAINSTRUCCIONES","");
 													$$.addHijos($1);
-													}							
+													}
+				|LISTAINSTRUCCIONES  ERROR SIMBOLO				
+				|ERROR SIMBOLO
 				;
 
 INSTRUCCIONES:SENTENCIAS	{ $$ = new Nodo("INSTRUCCIONES","");
@@ -312,6 +312,7 @@ SENTENCIAS:	REPETICION	{ $$ = new Nodo("SENTENCIA","");
 			|LLAMADA{ $$ = new Nodo("SENTENCIA","");
 						$$.addHijos($1);	
 						}
+
 			;
 
 LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC pcoma{ $$ = new Nodo("LLAMADA","");
@@ -322,7 +323,6 @@ LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC pcoma{ $$ = 
 																 $$.addHijos(new Nodo($1,"identificador")); 
 																 
 																}
-		|identificador  ERROR llaveC
 ;
 
 LISTAPARAMETROSVALOR:LISTAPARAMETROSVALOR coma 	PARAMETROSVALOR {	 $$ = new Nodo("LISTAPARAMETROSVALOR","");
@@ -332,15 +332,14 @@ LISTAPARAMETROSVALOR:LISTAPARAMETROSVALOR coma 	PARAMETROSVALOR {	 $$ = new Nodo
 					|PARAMETROSVALOR 							{	 $$ = new Nodo("LISTAPARAMETROSVALOR","");
 																 $$.addHijos($1); 
 																}
-					|ERROR parentesisC
-					
+					|LISTAPARAMETROSVALOR ERROR SIMBOLO 
+					|ERROR SIMBOLO
+
 					;			
 
 PARAMETROSVALOR: EXPRESIONRELACIONAL							{	 $$ = new Nodo("PARAMETROSVALOR","");
 																 $$.addHijos($1); 
-																}
-				
-				;
+																};
 
 EXP: identificador adicion pcoma{ $$ = new Nodo("AUM_DEC","");
 								$$.addHijos(new Nodo($1,"identificador")); 
@@ -355,7 +354,6 @@ EXP: identificador adicion pcoma{ $$ = new Nodo("AUM_DEC","");
 PRINT: print parentesisA EXPRESIONLOGICA parentesisC pcoma	{ $$ = new Nodo("PRINT","");
 																$$.addHijos($3);	
 															}
-		|ERROR pcoma
 				;
 
 //-------------Repeticion
@@ -379,7 +377,6 @@ DOWHILE: do llaveA llaveC while parentesisA EXPRESIONLOGICA parentesisC pcoma { 
 																								$$.addHijos($3);
 																								$$.addHijos($7);	
 																								}
-		|do ERROR llaveC
 		;
 //--------------While
 WHILE: while parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC			{ $$ = new Nodo("WHILE","");
@@ -402,8 +399,7 @@ FOR: for parentesisA DEC  EXPRESIONLOGICA pcoma EXPRESIONLOGICA parentesisC llav
 																											$$.addHijos($4);
 																											$$.addHijos($6);
 																											$$.addHijos($9)
-																											}
-	|for ERROR llaveC	
+																											}	
 	;
 
 //-------------------Control
@@ -426,7 +422,6 @@ IF: if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC 	{ $$ = new Nodo("I
 																				$$.addHijos($3);
 																				$$.addHijos($6);
 																				}	
-	|if ERROR llaveC	
 	;
 //-------------------else--------------
 ELSE:else llaveA llaveC						{ $$ = new Nodo("ELSE","");
@@ -435,7 +430,7 @@ ELSE:else llaveA llaveC						{ $$ = new Nodo("ELSE","");
 	|else llaveA LISTAINSTRUCCIONES llaveC	{ $$ = new Nodo("ELSE","");
 											$$.addHijos($3);
 											}	
-	|else ERROR llaveC
+	
 	;
 //------------------else if------------
 ELSEIF:else if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC	{ $$ = new Nodo("ELSEIF","");
@@ -445,7 +440,6 @@ ELSEIF:else if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC	{ $$ = new 
 																							$$.addHijos($4);
 																							$$.addHijos($7);
 																							}
-		|else if ERROR llaveC
 		;
 
 
@@ -453,28 +447,22 @@ ELSEIF:else if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC	{ $$ = new 
 //---------------Break
 BREAK: break pcoma													{ $$ = new Nodo("BREAK","");
 																//$$.addHijos(new Nodo($1,"break"));
-																}
-	|break ERROR pcoma
-	;
-																
+																};
 //---------------Continue
 CONTINUE: continue	pcoma											{ $$ = new Nodo("CONTINUE","");
 																//$$.addHijos(new Nodo($1,"continue"));
-																}
-		|continue ERROR pcoma
-		;
+																};
 //---------------Return
 RETURN: return EXPRESIONLOGICA pcoma									{ $$ = new Nodo("RETURN","");
 																  $$.addHijos($2);
 																}
-		|return ERROR pcoma
 		;
 //--------------Asignacion---------------
 ASIGNACION: identificador igual EXPRESIONLOGICA pcoma			{ $$ = new Nodo("ASIGNACION","");
 																	$$.addHijos(new Nodo($1,"identificador")); 
 																$$.addHijos($3);
 																}
-			|identificador ERROR pcoma
+	
 	;
 
 //--------------Declaracion--------------
@@ -482,7 +470,6 @@ DEC:TIPO LISTAIDENTIFICADORES pcoma							{ $$ = new Nodo("DEC","");
                             									$$.addHijos($1);
 																$$.addHijos($2);
 																}
-	|TIPO  ERROR pcoma
 
 	
 ;
@@ -506,7 +493,6 @@ LISTID:identificador igual EXPRESIONLOGICA 						{ $$ = new Nodo("LISTID","");
 		|identificador											{ $$ = new Nodo("LISTID","");
                             									$$.addHijos(new Nodo($1,"identificador")); 
 																}
-		
 																;
 
 //------------_Lista de Parametros
@@ -528,7 +514,6 @@ PARAMETROS:TIPO identificador 						{ $$ = new Nodo("PARAMETROS","");
                             							$$.addHijos($1);
                             							$$.addHijos(new Nodo($2,"identificador")); 
 													}	
-			
 			; 
 
 //--------------Tipo/Void
@@ -559,8 +544,6 @@ TIPO:int 					{ $$ = new Nodo("TIPO","");
 	|char					{ $$ = new Nodo("TIPO","");
 								$$.addHijos(new Nodo($1,"char")); 	
                         	}
-	
-	| ERROR parentesisC		
 	;
 
 
@@ -701,10 +684,10 @@ EXPRESIONLOGICA:
 
 ;
 
-ERROR: error { arreglosintactico.push('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
+ERROR: error  { arreglosintactico.push('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); }
 	;
 
 SIMBOLO: pcoma
-		|llaveC
 		|parentesisC
+		|llaveC
 		;
