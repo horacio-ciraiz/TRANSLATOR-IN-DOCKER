@@ -364,12 +364,35 @@ class AST {
 
             if(tamnodos==1){
                 let nombre = Nodo.Hijos[0].Valor;
-                var LLAMADA = "function"
+                var LLAMADA = "function " + nombre +"( );"
             }else if (tamnodos==2){
-
+                let nombre = Nodo.Hijos[0].Valor;
+                let parametros = this.TraducirAST(Nodo.Hijos[1]);
+                var LLAMADA = "function " + nombre +"( "+parametros+" );"
             }
 
             return LLAMADA
+        }else if (Nodo.Valor == "LISTAPARAMETROSVALOR") {
+            var tamnodos = Nodo.Hijos.length;
+
+            if(tamnodos==1){
+                var LISTAPARAMETROSVALOR= this.TraducirAST(Nodo.Hijos[0]);
+
+            }else if (tamnodos ==2){
+                let lista= this.TraducirAST(Nodo.Hijos[0]);
+                let parametros= this.TraducirAST(Nodo.Hijos[1]);
+
+                var LISTAPARAMETROSVALOR= lista+","+parametros;
+            }
+
+            return LISTAPARAMETROSVALOR
+        }else if (Nodo.Valor == "PARAMETROSVALOR") {
+
+            var PARAMETROSVALOR = this.TraducirAST(Nodo.Hijos[0]);
+
+
+            return PARAMETROSVALOR
+
         }
 
 

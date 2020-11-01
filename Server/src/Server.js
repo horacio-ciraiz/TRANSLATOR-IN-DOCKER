@@ -77,6 +77,7 @@ fs.readFile('./prueba.txt', (err,data) => {
     NodoObjeto= parser.parse(data.toString());
    
     try{
+        NodoObjeto= parser.parse(data.toString());
         var CodigoGraphvizRecuperado= Raiz.RecorrerAST(NodoObjeto.Nodo);
         var CodigoTraducidoRecuperado= Raiz.TraducirAST(NodoObjeto.Nodo);
         console.log(CodigoGraphvizRecuperado);
