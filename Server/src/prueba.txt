@@ -5,11 +5,11 @@ public class Myclase {
 
     
     
-    String variable, variable1 , variable2;
+    String variable , variable1 , variable2;
     int constante=100/5*5/5+3+2-1*0+1 + 2;
 
   
-   public void MyMetodo(int x  ){
+   public void MyMetodo (int x  ){
        metodo_llamada(x);
       String nombre="myMetodo";
       int x , y;
@@ -20,10 +20,10 @@ public class Myclase {
       System.out.print(x);
       break;
   }
-  public void MyMetodo2(int x){
+  public void MyMetodo2(int x ){
       int valor=x;
       System.out.println(x);
-      for(int f; x<=f; f++){
+      for (int f; x<=f; f++){
           System.out.println("HOla");
           hola(x);
       }
@@ -63,6 +63,14 @@ public void testif(String valor){
         
   }
 
-}public interface MyInterface { }
+}
+public interface MyInterface { 
 
- 
+}
+public class MyClase2 { 
+    
+}
+
+public class MyClase3 { 
+    
+}

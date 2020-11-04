@@ -1,26 +1,30 @@
 var NodoContador = 1;
 var CodigoGraphviz = "";
-var CodigoTraduccion = "";
 class AST {
+
     RecorrerAST(Nodo) {
         if (Nodo.ID == 0) {
             Nodo.ID = NodoContador;
             NodoContador++;
         }
 
-
-        CodigoGraphviz += "S" + Nodo.ID + " [label = \"" + Nodo.Valor + "\" ];" + "\n"
+       
+        CodigoGraphviz += "S" + Nodo.ID + " [label = \"" + Nodo.Valor + "\" ];" + " "
 
         Nodo.Hijos.forEach(element => {
 
-            CodigoGraphviz += "S" + Nodo.ID + " -> " + "S" + NodoContador + ";" + "\n";
+            CodigoGraphviz += "S" + Nodo.ID + " -> " + "S" + NodoContador + ";" + "  ";
 
             this.RecorrerAST(element);
         });
+       
         return CodigoGraphviz;
 
     }
+    LimpiarVariableGraph() {
 
+        CodigoGraphviz="";
+    }
     TraducirAST(Nodo) {
         if (Nodo.Valor == "INICIO") {//--------------------------------Inicio------------------
             console.log("---INICIO---");
@@ -59,7 +63,7 @@ class AST {
             } else if (tamnodos == 2) {
                 let LISTACUERPOCLASS = this.TraducirAST(Nodo.Hijos[1]);//listacuerpoclass
                 let identificador = Nodo.Hijos[0].Valor;
-                var CLASS = "class " + identificador + "{\n" + LISTACUERPOCLASS + "\n}";
+                var CLASS = "class " + identificador + "{\n" + LISTACUERPOCLASS + "\n}\n";
             }
             return CLASS;
         } else if (Nodo.Valor == "LISTACUERPOCLASS") {
@@ -348,6 +352,9 @@ class AST {
         }else if (Nodo.Valor=="BREAK"){
             var BREAK = "break;"
             return BREAK
+        }else if (Nodo.Valor=="ERROR"){
+            var ERROR = ""
+            return ERROR
         }else if (Nodo.Valor=="CONTINUE"){
             var CONTINUE = "continue;"
             return CONTINUE
@@ -407,3 +414,4 @@ class AST {
 
 }
 module.exports = AST;
+module.exports.CodigoGraphviz=CodigoGraphviz;
