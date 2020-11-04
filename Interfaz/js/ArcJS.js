@@ -89,7 +89,7 @@ function MetodoAbrir() {
     });
 
   }else if ( cod=="Menu_Analizar"){
-    alert("Alertas 0007");
+    alert("Alertas 0008");
     Conexion();
     CodigoTraducido();
     CodigoErroresLexicos();
@@ -97,6 +97,10 @@ function MetodoAbrir() {
     CodigoListaTokens();
     CodigoGraphviz();
 
+     ErroresLexicos="";
+     ErroresSintacticos="";
+     CodigoJavaScript="";
+     ListaTokens="";
     //document.getElementById("ConsolaJavaScript").value = "Errores Lexicos******* \n"+ ErroresLexicos + "\n Errores Sintacticos ********* "+ ErroresSintacticos;
   }
   
@@ -155,12 +159,13 @@ function MenuDescargar(){
     descargarArchivo(generarTexto(), 'archivo.js');
 
   }else if (cod=="Menu_AST"){
-    alert("Descargar AST");
-    
-    var graphviz = 'digraph {' + CodigoGraphvizRecuperado + '}';
+    alert("Abrir AST");
+    var win = window.open("./Ondox.html?id="+CodigoGraphvizRecuperado,'_blank');
+    CodigoGraphvizRecuperado="";
+    //var graphviz = 'digraph {' + CodigoGraphvizRecuperado + '}';
 
-    d3.select("#graph").graphviz()
-    .renderDot(graphviz);
+    //d3.select("#graph").graphviz()
+    //.renderDot(graphviz);
 
   }
 

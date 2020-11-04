@@ -13,18 +13,18 @@
 <body>
 
 
-< 
+ 
 <div id="graph" style="text-align: center;"></div>
 <script>
             
 	
             let params = new URLSearchParams(location.search);
 		    var contract = params.get('id');
-			
+			alert(contract.toString());
 			var prueba= document.getElementById("graph");
-			prueba.innerHTML=contract;    
+			
 
 d3.select("#graph").graphviz()
-    .renderDot('digraph  {a -> b}');
+    .renderDot('digraph  {'+contract+'}');
 
 </script>

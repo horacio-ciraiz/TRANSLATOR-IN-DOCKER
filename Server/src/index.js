@@ -40,25 +40,29 @@ app.post('/api/Analizar',(req,res)=>{
 
 function Analisis(datos){
 
+    try{
+    CodigoTraducidoRecuperado="";
+    CodigoGraphvizRecuperado="";
     datos=datos.substring(1,datos.length-1)//quitamos las llaves jason
     console.log(datos);
-
     var analisis=  parser.parse(datos.toString());
     Nodo=analisis.nodo;
     ErroresLexicos= analisis.lex;
     ErroresSintacticos = analisis.sin;
     ListaTokens= analisis.tok;
-
     var Raiz = new AST();
-    CodigoTraducidoRecuperado="";
-    CodigoGraphvizRecuperado="";
     CodigoGraphvizRecuperado= Raiz.RecorrerAST(Nodo);
-    
     CodigoTraducidoRecuperado= Raiz.TraducirAST(Nodo);
-
     Raiz.LimpiarVariableGraph();
     Raiz.CodigoGraphviz="";
     Nodo="";
+}catch(error){
+    CodigoGraphvizRecuperado="";
+    CodigoTraducidoRecuperado="";
+    ErroresLexicos= "Error Fatal";
+    ErroresSintacticos = "Error Fatal";
+    ListaTokens= "Error Fatal";
+}
 }
 
 
