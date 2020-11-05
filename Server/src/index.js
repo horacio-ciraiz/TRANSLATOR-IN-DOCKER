@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 //funcion que procesa datos antes de que el servidor lo reciba
 const morgan = require('morgan');
-
 // puerto en el que escucha
 app.set('port',process.env.PORT || 3030);
 app.set('json spaces',2);

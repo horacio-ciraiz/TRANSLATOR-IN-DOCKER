@@ -1,181 +1,272 @@
-# Manual Tecnico 
+# Manual Tecnico  Horacio Ciraiz Orellana 201513758
 
-[![N|Solid](Imagenes/Imagen1.png)](https://nodesource.com/products/nsolid)
-
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
-
-Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
-
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
-
-# New Features!
-
-  - Import a HTML file and watch it magically convert to Markdown
-  - Drag and drop images (requires your Dropbox account be linked)
+# Descripcion:
+- Aplicacion Web que realiza la traduccion de un lenguaje a otro utilizando herramientas para analisis léxico y sintactico, tecnologias Web Nodejs,desarrollado en lenguaje Go y JavaScript.
 
 
-You can also:
-  - Import and save files from GitHub, Dropbox, Google Drive and One Drive
-  - Drag and drop markdown and HTML files into Dillinger
-  - Export documents as Markdown, HTML and PDF
+# Objetivos:
 
-Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
+- Realizar una Aplicacion Web para traducir  lenguaje Java a JavaScript.
+# Proyecto Translator in Docker
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+# Conexion
+    -El proyecto Translator in Docker fue desarrollado con distintas tecnologias  y lenguajes
+#Backend
+    Desarrollado con tecnologia NodeJs,Express,Core,Morgan y Lenguaje de Programacion JavaScript se implementan conjunto a la herramienta Jison para la creacion de Analizadores Lexicos y Sintacticos 
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
-
-### Tech
-
-Dillinger uses a number of open source projects to work properly:
-
-* [AngularJS] - HTML enhanced for web apps!
-* [Ace Editor] - awesome web-based text editor
-* [markdown-it] - Markdown parser done right. Fast and easy to extend.
-* [Twitter Bootstrap] - great UI boilerplate for modern web apps
-* [node.js] - evented I/O for the backend
-* [Express] - fast node.js network app framework [@tjholowaychuk]
-* [Gulp] - the streaming build system
-* [Breakdance](https://breakdance.github.io/breakdance/) - HTML to Markdown converter
-* [jQuery] - duh
-
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
-
-### Installation
-
-Dillinger requires [Node.js](https://nodejs.org/) v4+ to run.
-
-Install the dependencies and devDependencies and start the server.
+# Nodejs
+El servidor fue implementado con tecnologia nodejs,express y acontinuacion se describiran los elementos mas importantes de este:
 
 ```sh
-$ cd dillinger
-$ npm install -d
+$ npm install express --save
+$ npm install morgan  --save
+$ npm install jison
+$ npm install cors -g
+$ npm install --save-dev nodemon
 $ node app
 ```
 
-For production environments...
+el siguiente codigo permite levantar el servidor Nodejs y configurar las distintas partes de este para recibir las peticiones
+[![N|Solid](Imagenes/T1.png)](Imagenes/T1.png)
+
+luego se configura el servidor con una serie de metodos POST para la recepcion de peticiones por parte de la aplicacion Web
+
+[![N|Solid](Imagenes/T2.png)](Imagenes/T2.png)
+
+y el metodo principal que hace el llamado al metodo que inicia el analisis del documento y la recepccion de erroes
+
+[![N|Solid](Imagenes/T2.png)](Imagenes/T2.png)
+
+
+# Analizadores
+
+# Analizador Lexico
+  El analizador lexico fue desarrollado con la herramienta Jison en un Archivo con nombre Gramatica.jison y a continuacion se mostrara una serie de imagenes con las distintas expresiones regulares utilizadas para este y la declaracion de  palabras reservadas utilizadas para el analisis correcto
+
+[![N|Solid](Imagenes/T4.png)](Imagenes/T4.png)
+
+
+# Analizador Sintactico
+  El anailzador sintactico fue desarrollado con la herrmaienta Jison en un archivo con nombre Gramatica.jison y a continuacion se proporciona la gramatica utilizada para el correcto reconocimiento del lenguaje.
 
 ```sh
-$ npm install --production
-$ NODE_ENV=production node app
+INICIO: LISTACLASE EOF ;
+
+LISTACLASE:LISTACLASE CLASE
+	|CLASE					
+	|LISTACLASE  ERROR SIMBOLO CLASE
+	| ERROR SIMBOLO	CLASE;
+
+
+CLASE:CLASS
+	|INTERFACE;
+
+MAIN: public static void main parentesisA string  corcheteA corcheteC args parentesisC llaveA  llaveC
+	| public static void main parentesisA string  corcheteA corcheteC args parentesisC llaveA LISTAINSTRUCCIONES llaveC;
+
+CLASS: public class identificador llaveA llaveC  
+	|public class identificador llaveA LISTACUERPOCLASS llaveC;
+				
+LISTACUERPOCLASS:LISTACUERPOCLASS CUERPOCLASS 
+				|CUERPOCLASS					
+				|LISTACUERPOCLASS  ERROR SIMBOLO CUERPOCLASS
+				| ERROR SIMBOLO	CUERPOCLASS	;
+
+CUERPOCLASS:METODOS 
+			|FUNCIONES
+			|DEC
+			|EXP
+			|MAIN
+			|ASIGNACION;
+
+
+
+FUNCIONES:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC pcoma 
+		|public TIPOVOID identificador parentesisA  parentesisC pcoma;
+
+//--------------------------------Metodos
+METODOS:public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC llaveA llaveC	
+		|public TIPOVOID identificador parentesisA  parentesisC llaveA llaveC 
+		|public TIPOVOID identificador parentesisA LISTAPARAMETROS parentesisC llaveA LISTAINSTRUCCIONES llaveC /--con parametros
+		|public TIPOVOID identificador parentesisA  parentesisC llaveA LISTAINSTRUCCIONES llaveC;						
+
+//-----------------------------Interface------------------
+INTERFACE: public interface identificador llaveA llaveC 
+		|public interface identificador llaveA LISTACUERPOINTERFACE llaveC;
+
+LISTACUERPOINTERFACE:LISTACUERPOINTERFACE CUERPOINTERFACE
+					|CUERPOINTERFACE
+					|LISTACUERPOINTERFACE  ERROR SIMBOLO CUERPOINTERFACE
+					| ERROR SIMBOLO	CUERPOINTERFACE;
+
+CUERPOINTERFACE:FUNCIONES;
+
+//-------------Lista de Instrucciones------
+LISTAINSTRUCCIONES:LISTAINSTRUCCIONES INSTRUCCIONES
+				|INSTRUCCIONES 
+				|LISTAINSTRUCCIONES  ERROR SIMBOLO INSTRUCCIONES
+				|ERROR SIMBOLO	INSTRUCCIONES;
+
+INSTRUCCIONES:SENTENCIAS;
+
+SENTENCIAS:	REPETICION
+			|CONTROL
+			|BREAK
+			|CONTINUE
+			|RETURN
+			|DEC
+			|ASIGNACION
+			|PRINT
+			|EXP 
+			|LLAMADA;
+
+LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC pcoma
+		|identificador parentesisA  parentesisC pcoma;
+
+LISTAPARAMETROSVALOR:LISTAPARAMETROSVALOR coma 	PARAMETROSVALOR
+					|PARAMETROSVALOR;			
+
+PARAMETROSVALOR: EXPRESIONRELACIONAL;
+
+EXP: identificador adicion pcoma
+	|identificador sustraccion pcoma;
+
+
+PRINT: print parentesisA EXPRESIONLOGICA parentesisC pcoma;
+
+//-------------Repeticion
+REPETICION:FOR
+		|WHILE
+		|DOWHILE;
+
+//--------------Do While---------------
+DOWHILE: do llaveA llaveC while parentesisA EXPRESIONLOGICA parentesisC pcoma 
+		|do llaveA LISTAINSTRUCCIONES llaveC while parentesisA EXPRESIONLOGICA parentesisC pcoma;
+//--------------While
+WHILE: while parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC
+	| while parentesisA EXPRESIONLOGICA parentesisC llaveA LISTAINSTRUCCIONES llaveC;
+//-----------------For
+
+FOR: for parentesisA DEC  EXPRESIONLOGICA pcoma EXPRESIONLOGICA parentesisC llaveA llaveC
+	|for parentesisA DEC  EXPRESIONLOGICA pcoma EXPRESIONLOGICA parentesisC llaveA LISTAINSTRUCCIONES llaveC;
+
+//-------------------Control
+CONTROL:IF
+		|ELSE
+		|ELSEIF;
+//------------------if
+IF: if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC
+	|if parentesisA EXPRESIONLOGICA parentesisC llaveA LISTAINSTRUCCIONES llaveC;
+//-------------------else--------------
+ELSE:else llaveA llaveC	
+	|else llaveA LISTAINSTRUCCIONES llaveC	;
+//------------------else if------------
+ELSEIF:else if parentesisA EXPRESIONLOGICA parentesisC llaveA llaveC	
+		|else if parentesisA EXPRESIONLOGICA parentesisC llaveA LISTAINSTRUCCIONES llaveC;
+//---------------Break
+BREAK: break pcoma;
+//---------------Continue
+CONTINUE: continue	pcoma;
+//---------------Return
+RETURN: return EXPRESIONLOGICA pcoma		;
+//--------------Asignacion---------------
+ASIGNACION: identificador igual EXPRESIONLOGICA pcoma;
+
+//--------------Declaracion--------------
+DEC:TIPO LISTAIDENTIFICADORES pcoma;
+
+LISTAIDENTIFICADORES: LISTAIDENTIFICADORES coma LISTID 
+					|LISTID;
+
+LISTID:identificador igual EXPRESIONLOGICA 											
+		|identificador;
+
+//------------_Lista de Parametros
+LISTAPARAMETROS:LISTAPARAMETROS coma PARAMETROS 
+				|PARAMETROS;
+
+
+
+
+PARAMETROS:TIPO identificador; 
+
+//--------------Tipo/Void
+TIPOVOID:VOID 
+		|TIPO;
+VOID: void;
+//--------------Tipo		
+TIPO:int 					
+	|boolean				
+	|double					
+	|string					
+	|char;
+//---------------Expresion Numerica
+EXPRESIONNUMERICA:
+		menos EXPRESIONNUMERICA %prec umenos		
+		|EXPRESIONNUMERICA mas EXPRESIONNUMERICA	
+		|EXPRESIONNUMERICA menos EXPRESIONNUMERICA 
+		|EXPRESIONNUMERICA por EXPRESIONNUMERICA		
+		|EXPRESIONNUMERICA dividido EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA adicion
+		|EXPRESIONNUMERICA sustraccion 						
+		|parentesisA EXPRESIONNUMERICA parentesisC	
+		|entero										
+		|decimal									
+		|cadena										
+		|identificador;
+
+EXPRESIONRELACIONAL:
+		//--------------Relacionales----------
+		EXPRESIONNUMERICA dobleigual EXPRESIONNUMERICA 		
+		|EXPRESIONNUMERICA notigual EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA mayor EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA mayorigual EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA menor EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA menorigual EXPRESIONNUMERICA
+		|EXPRESIONNUMERICA /* esta se puede borrar*/;
+
+EXPRESIONLOGICA:
+		//--------------Logicas---------------
+		|EXPRESIONRELACIONAL and EXPRESIONRELACIONAL 		
+		|EXPRESIONRELACIONAL or EXPRESIONRELACIONAL			
+		|EXPRESIONRELACIONAL xor EXPRESIONRELACIONAL		
+		|not EXPRESIONRELACIONAL							
+		|EXPRESIONRELACIONAL;
+
+ERROR: error  { arreglosintactico.push('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column + "se esperaba: "); console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); };
+
+SIMBOLO: pcoma
+		|parentesisC
+		|llaveC	;
+
 ```
 
-### Plugins
+# FRONTEND
+  La parte del frontend fue desarrollado con distintos lenguajes.
 
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
+Servidor Frontal desarrollado con Lenguaje Go
+Apliacion Web desarrollado con HTML, CSS y JavaScript
 
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
+#SERVIDOR GO
+Se implemento un servidor desarrollado con lenguaje de programacion Go para la publicacion a continuacion se muestra el codigo utilizado para la publicacion de la pagina en Servidor Go
 
 
-### Development
+[![N|Solid](Imagenes/T5.png)](Imagenes/T5.png)
 
-Want to contribute? Great!
+las paginas y metodos fueron realizados con JavaScript para la conexion,recepcion y peticion de datos por parte del cliente 
 
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantaneously see your updates!
+a continuacion se mostrara una serie de imagenes con el codigo utlizado para la  Aplicacion Web.
 
-Open your favorite Terminal and run these commands.
-
-First Tab:
-```sh
-$ node app
-```
-
-Second Tab:
-```sh
-$ gulp watch
-```
-
-(optional) Third:
-```sh
-$ karma test
-```
-#### Building for source
-For production release:
-```sh
-$ gulp build --prod
-```
-Generating pre-built zip archives for distribution:
-```sh
-$ gulp build dist --prod
-```
-### Docker
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 8080, so change this within the Dockerfile if necessary. When ready, simply use the Dockerfile to build the image.
-
-```sh
-cd dillinger
-docker build -t joemccann/dillinger:${package.json.version} .
-```
-This will create the dillinger image and pull in the necessary dependencies. Be sure to swap out `${package.json.version}` with the actual version of Dillinger.
-
-Once done, run the Docker image and map the port to whatever you wish on your host. In this example, we simply map port 8000 of the host to port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
-
-```sh
-docker run -d -p 8000:8080 --restart="always" <youruser>/dillinger:${package.json.version}
-```
-
-Verify the deployment by navigating to your server address in your preferred browser.
-
-```sh
-127.0.0.1:8000
-```
-
-#### Kubernetes + Google Cloud
-
-See [KUBERNETES.md](https://github.com/joemccann/dillinger/blob/master/KUBERNETES.md)
+Peticiones a NodeJs para el inicio del Analisis 
+[![N|Solid](Imagenes/T6.png)](Imagenes/T6.png)
 
 
-### Todos
+#Reportes
+la Aplicacion cuenta con una serie de Reportes  de Errores Lexicos, Sintacticos ,Tokens y arbol AST en formato de imagen con codigo Graphviz
 
- - Write MORE Tests
- - Add Night Mode
-
-License
-----
-
-MIT
+[![N|Solid](Imagenes/T7.png)](Imagenes/T7.png)
 
 
-**Free Software, Hell Yeah!**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+[![N|Solid](Imagenes/T8.png)](Imagenes/T8.png)
 
 
-   [dill]: <https://github.com/joemccann/dillinger>
-   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
-   [john gruber]: <http://daringfireball.net>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [Ace Editor]: <http://ace.ajax.org>
-   [node.js]: <http://nodejs.org>
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [jQuery]: <http://jquery.com>
-   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
-   [express]: <http://expressjs.com>
-   [AngularJS]: <http://angularjs.org>
-   [Gulp]: <http://gulpjs.com>
-
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
-   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
-   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>

@@ -39,10 +39,8 @@
                     <td width=100>
                         <select name ="Menu" class="Menu" id="Menu" onchange="MetodoAbrir();">
                             <option value =" null " disabled selected selected="selected"> Menu</option>".
-                            <Option value = "Menu_Abrir" id="open_file" type="file">Abrir</option>
-                            <Option value = "Menu_Nuevo" id="add_tab">Nuevo</option>     
+                            <Option value = "Menu_Abrir" id="open_file" type="file">Abrir</option>     
                             <Option value = "Menu_Guardar"id="save">Guardar</option>
-                            <Option value = "Menu_GuardarComo" id="saveas">Guardar Como</option> 
                             <Option value = "Menu_Analizar" id="analizar">Analizar</option>     
                             
                         </select>
@@ -101,11 +99,10 @@
 
             </tr>
         </table>
-        <div id="graph" style="text-align: center;"></div>
+       
         <script>
 
-            d3.select("#graph").graphviz()
-                .renderDot('digraph  {a -> b}');
+        
             
             </script>
 	</body>

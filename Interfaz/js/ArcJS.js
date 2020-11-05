@@ -48,7 +48,7 @@ function MetodoAbrir() {
   var cod= document.getElementById("Menu").value;
   if(cod=="Menu_Abrir"){
     
-    alert(cod);
+    
     var input = document.createElement('input');
     input.type = 'file';
     input.onchange = e => { 
@@ -89,23 +89,43 @@ function MetodoAbrir() {
     });
 
   }else if ( cod=="Menu_Analizar"){
-    alert("Alertas 0008");
-    Conexion();
-    CodigoTraducido();
-    CodigoErroresLexicos();
-    CodigoErroresSintacticos();
-    CodigoListaTokens();
-    CodigoGraphviz();
+
+    var texto1 = document.getElementById("entradatext").value 
+
+    if(texto1==""){
+      alert("Debe Abrir un Archivo");
+    }else{
+      Conexion();
+      CodigoTraducido();
+      CodigoErroresLexicos();
+      CodigoErroresSintacticos();
+      CodigoListaTokens();
+      CodigoGraphviz();
 
      ErroresLexicos="";
      ErroresSintacticos="";
      CodigoJavaScript="";
      ListaTokens="";
+    }
     //document.getElementById("ConsolaJavaScript").value = "Errores Lexicos******* \n"+ ErroresLexicos + "\n Errores Sintacticos ********* "+ ErroresSintacticos;
-  }
+  }else if ( cod=="Menu_Guardar"){
   
 
+    descargarArchivo(generarTextoGuardar(), 'Guardado.java');
+    
 
+
+  }
+}
+
+function generarTextoGuardar(){
+
+  var texto1 = document.getElementById("entradatext").value 
+    var texto = [];
+    texto.push(texto1);
+    return new Blob(texto, {
+      type: 'text/plain'
+    });
 }
 
 var ErroresLexicos="";
@@ -115,6 +135,8 @@ var CodigoGraphvizRecuperado="";
 var ListaTokens="";
 
 function generarTexto() {
+
+  
   var texto = [];
   texto.push(CodigoJavaScript);
   return new Blob(texto, {
@@ -354,11 +376,11 @@ function CodigoListaTokens(){
 
 
 function handleFiles(files) {
-  alert("cod");
+  
   var file = files[0];
   var reader = new FileReader();
   reader.onload = function (e) {
-    alert("cod2");
+    
       // Cuando éste evento se dispara, los datos están ya disponibles.
       // Se trata de copiarlos a una área <div> en la página.
       var output = document.getElementById("fileOutput");
