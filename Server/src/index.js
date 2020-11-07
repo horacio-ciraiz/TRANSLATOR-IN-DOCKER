@@ -39,29 +39,32 @@ app.post('/api/Analizar',(req,res)=>{
 
 function Analisis(datos){
 
-    try{
+
     CodigoTraducidoRecuperado="";
     CodigoGraphvizRecuperado="";
-    datos=datos.substring(1,datos.length-1)//quitamos las llaves jason
+    datos=datos.substring(1,datos.length-1) ;//quitamos las llaves jason
     console.log(datos);
-    var analisis=  parser.parse(datos.toString());
+
+    var analisis=  parser.parse(datos.toString()); 
     Nodo=analisis.nodo;
+
+    
     ErroresLexicos= analisis.lex;
     ErroresSintacticos = analisis.sin;
     ListaTokens= analisis.tok;
+
     var Raiz = new AST();
+    try{
     CodigoGraphvizRecuperado= Raiz.RecorrerAST(Nodo);
     CodigoTraducidoRecuperado= Raiz.TraducirAST(Nodo);
+    }catch(error){
+        CodigoGraphvizRecuperado="ERROR FATAL";
+        CodigoTraducidoRecuperado="ERROR FATAL";
+    }
     Raiz.LimpiarVariableGraph();
     Raiz.CodigoGraphviz="";
-    Nodo="";
-}catch(error){
-    CodigoGraphvizRecuperado="";
-    CodigoTraducidoRecuperado="";
-    ErroresLexicos= "Error Fatal";
-    ErroresSintacticos = "Error Fatal";
-    ListaTokens= "Error Fatal";
-}
+   
+
 }
 
 
@@ -84,8 +87,8 @@ app.post('/api/CodigoTraducido',(req,res)=>{
  //----------------ErroresLexicos
  app.post('/api/ErroresLexicos',(req,res)=>{
     const{datos} =req.body;
-    console.log("************ERRORES LEXICOS");
-    console.log(ErroresLexicos);
+    //console.log("************ERRORES LEXICOS");
+    //console.log(ErroresLexicos);
     res.json(ErroresLexicos);
  
  });
@@ -94,6 +97,7 @@ app.post('/api/CodigoTraducido',(req,res)=>{
 app.post('/api/ErroresSintacticos',(req,res)=>{
     const{datos} =req.body;
     //rast= new Recorrido_Arbol();
+    console.log("***ERRORES SINTACTICOS***")
     console.log(ErroresSintacticos);
     res.json(ErroresSintacticos);
  

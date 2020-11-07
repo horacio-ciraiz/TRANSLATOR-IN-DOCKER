@@ -371,11 +371,11 @@ class AST {
 
             if(tamnodos==1){
                 let nombre = Nodo.Hijos[0].Valor;
-                var LLAMADA = "function " + nombre +"( );"
+                var LLAMADA =  nombre +"( );"
             }else if (tamnodos==2){
                 let nombre = Nodo.Hijos[0].Valor;
                 let parametros = this.TraducirAST(Nodo.Hijos[1]);
-                var LLAMADA = "function " + nombre +"( "+parametros+" );"
+                var LLAMADA = nombre +"( "+parametros+" );"
             }
 
             return LLAMADA

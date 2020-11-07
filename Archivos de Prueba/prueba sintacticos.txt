@@ -5,7 +5,7 @@ public class class Myclase {
 
     
     
-    String variable , variable1 , variable2;
+    String variable , , variable2;
     int constante=100/5*5/5+3+2-1*0+1 + 2;
 
   

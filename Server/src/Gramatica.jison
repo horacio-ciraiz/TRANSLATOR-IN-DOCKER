@@ -32,6 +32,7 @@
 
 
 
+
 //------------------Caracteres-----------
 ","             %{ arreglotokens.push('Este es un igual: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); return 'coma';%}
 ";"             %{ arreglotokens.push('Este es un igual: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); return 'pcoma'%};
@@ -90,6 +91,7 @@
 "String"				%{ arreglotokens.push('Este es un String: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); return 'string';%} 
 "char"					%{ arreglotokens.push('Este es un char: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); return 'char';%}
 
+"$" return RECUP;
 
 /* Espacios en blanco */
 [\s]+                    {}
@@ -122,7 +124,7 @@
 %start INICIO 
 %% /* Definición de la gramática */
 
-INICIO: LISTACLASE EOF 	{$$= new Nodo("INICIO","");
+INICIO: LISTACLASE  EOF 	{$$= new Nodo("INICIO","");
 								$$.addHijos($1);
 
 									var auxlex=arreglolexico;
@@ -136,8 +138,7 @@ INICIO: LISTACLASE EOF 	{$$= new Nodo("INICIO","");
 									
 								return{nodo:Nodoaux,lex:auxlex,sin:auxsin,tok:auxtok};
 						}
-
-						;
+							;
 LISTACLASE:LISTACLASE CLASE{ $$ = new Nodo("LISTACLASE","");
 								$$.addHijos($1);	
 								$$.addHijos($2);																			
@@ -154,6 +155,7 @@ LISTACLASE:LISTACLASE CLASE{ $$ = new Nodo("LISTACLASE","");
 									$$.addHijos($3);		
 																										
 							 }
+
 	;
 
 CLASES:llaveA llaveC;
@@ -165,6 +167,7 @@ CLASE:CLASS{ $$ = new Nodo("TIPOCLASE","");
 	|INTERFACE{ $$ = new Nodo("TIPOCLASE","");
 					$$.addHijos($1);																			
 				}
+
 	;
 
 MAIN: public static void main parentesisA string  corcheteA corcheteC args parentesisC llaveA  llaveC{ $$ = new Nodo("MAIN","");
@@ -196,6 +199,7 @@ LISTACUERPOCLASS:LISTACUERPOCLASS CUERPOCLASS { $$ = new Nodo("LISTACUERPOCLASS"
 				|LISTACUERPOCLASS  ERROR SIMBOLO CUERPOCLASS{   $$ = new Nodo("LISTACUERPOCLASS","");
 																$$.addHijos($1);
 																$$.addHijos($4);
+																
 																					
 												 }
 				| ERROR SIMBOLO	CUERPOCLASS		{   $$ = new Nodo("LISTACUERPOCLASS","");
@@ -223,6 +227,7 @@ CUERPOCLASS:METODOS { $$ = new Nodo("CUERPOCLASS","");
 			|ASIGNACION	{ $$ = new Nodo("CUERPOCLASS","");
 						$$.addHijos($1);				 //---------------------Funciones
 			}
+			
 			;
 
 
@@ -308,6 +313,7 @@ LISTAINSTRUCCIONES:LISTAINSTRUCCIONES INSTRUCCIONES 	{ $$ = new Nodo("LISTAINSTR
 				|LISTAINSTRUCCIONES  ERROR SIMBOLO INSTRUCCIONES{   $$ = new Nodo("LISTAINSTRUCCIONES","");
 																$$.addHijos($1);
 																$$.addHijos($4);
+																
 																					
 												 }
 				| ERROR SIMBOLO	INSTRUCCIONES		{   $$ = new Nodo("LISTAINSTRUCCIONES","");
@@ -349,20 +355,21 @@ SENTENCIAS:	REPETICION	{ $$ = new Nodo("SENTENCIA","");
 			|EXP { $$ = new Nodo("SENTENCIA","");
 						$$.addHijos($1);	
 						}
-			|LLAMADA{ $$ = new Nodo("SENTENCIA","");
+			|LLAMADA pcoma { $$ = new Nodo("SENTENCIA","");
 						$$.addHijos($1);	
 						}
-
+			
 			;
 
-LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC pcoma{ $$ = new Nodo("LLAMADA","");
+LLAMADA: identificador parentesisA LISTAPARAMETROSVALOR parentesisC  { $$ = new Nodo("LLAMADA","");
 																 $$.addHijos(new Nodo($1,"identificador")); 
 																 $$.addHijos($3);	
 																}
-		|identificador parentesisA  parentesisC pcoma		{ $$ = new Nodo("LLAMADA","");
+		|identificador parentesisA  parentesisC 		{ $$ = new Nodo("LLAMADA","");
 																 $$.addHijos(new Nodo($1,"identificador")); 
 																 
 																}
+																
 ;
 
 LISTAPARAMETROSVALOR:LISTAPARAMETROSVALOR coma 	PARAMETROSVALOR {	 $$ = new Nodo("LISTAPARAMETROSVALOR","");
@@ -643,8 +650,15 @@ EXPRESIONNUMERICA:
                         							}
 		|identificador  							{ $$ = new Nodo("EXP","TERM");
 															$$.addHijos(new Nodo($1,"identificador")); 	
-                        							arreglotokens.push('Este es un token: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column);
+                        							
 													}
+		|ERROR 										{ $$ = new Nodo("EXP",""); 	
+                        								$$.addHijos($1); 
+													}
+		|LLAMADA 									{ $$ = new Nodo("EXP","UNICO");
+													   $$.addHijos($1);	
+													}
+				
 ;
 
 EXPRESIONRELACIONAL:
@@ -720,7 +734,8 @@ EXPRESIONLOGICA:
 		|EXPRESIONRELACIONAL								{ $$ = new Nodo("EXP","UNICO");
 															$$.addHijos($1); 
 															
-                        									}
+                        									}	
+
 
 ;
 
