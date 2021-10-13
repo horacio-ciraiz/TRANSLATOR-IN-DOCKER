@@ -49,6 +49,8 @@ y el metodo principal que hace el llamado al metodo que inicia el analisis del d
 # Analizador Sintactico
   El anailzador sintactico fue desarrollado con la herrmaienta Jison en un archivo con nombre Gramatica.jison y a continuacion se proporciona la gramatica utilizada para el correcto reconocimiento del lenguaje.
 
+
+
 ```sh
 INICIO: LISTACLASE EOF ;
 
