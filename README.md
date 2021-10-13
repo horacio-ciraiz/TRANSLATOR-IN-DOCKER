@@ -30,13 +30,14 @@ Se implemento un servidor desarrollado con lenguaje de programacion Go para la p
 >### INTERFAZ
 Apliacion Web desarrollado con HTML, CSS y metodos fueron realizados con JavaScript para la conexion,recepcion y peticion de datos por parte del cliente 
 
-a continuacion se mostrara una serie de imagenes con el codigo utlizado para la  Aplicacion Web.
+A continuacion se mostrara una serie de imagenes con el codigo utlizado para la  Aplicacion Web.
 
 Peticiones a NodeJs para el inicio del Analisis 
+
 ![Image text](Documentacion/Imagenes/T6.png)
 
-#Menu Principal
-  
+>### Menu Principal
+ *** 
 ### Abrir 
 Este menu permite cargar a la consola principal el archivo a Analizar 
 
